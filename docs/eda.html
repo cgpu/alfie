@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="" />
+
+
+<title>Exploratory Data Analysis of Orthofinder results</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.9.1/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-1.49.4/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-1.49.4/plotly-latest.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">alfie</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="eda.html">EDA</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/cgpu/alfie">
+    <span class="fa fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Exploratory Data Analysis of <code>Orthofinder</code> results</h1>
+<h3 class="subtitle">Simulated dataset generated by <code>Alf</code></h3>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-12-26
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>alfie/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.0). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20191222code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20191222)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20191222code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20191222)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Session information:</strong> recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomcgpualfietree49b99ddeaaef8a2a771a027b1d7c982753378950targetblank49b99dda"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/cgpu/alfie/tree/49b99ddeaaef8a2a771a027b1d7c982753378950" target="_blank">49b99dd</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomcgpualfietree49b99ddeaaef8a2a771a027b1d7c982753378950targetblank49b99dda" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/cgpu/alfie/blob/49b99ddeaaef8a2a771a027b1d7c982753378950/analysis/eda.Rmd" target="_blank">49b99dd</a>
+</td>
+<td>
+cgpu
+</td>
+<td>
+2019-12-26
+</td>
+<td>
+Adds EDA tab; Adds custom style.css
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/cgpu/alfie/blob/4173f04f974d38179bfff3039063828cd468630b/analysis/eda.Rmd" target="_blank">4173f04</a>
+</td>
+<td>
+cgpu
+</td>
+<td>
+2019-12-22
+</td>
+<td>
+Removes redundant eda.{Rmd,html}; Content moved to index.Rmd
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/cgpu/alfie/4173f04f974d38179bfff3039063828cd468630b/docs/eda.html" target="_blank">4173f04</a>
+</td>
+<td>
+cgpu
+</td>
+<td>
+2019-12-22
+</td>
+<td>
+Removes redundant eda.{Rmd,html}; Content moved to index.Rmd
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/cgpu/alfie/937717c58d1f3c5d14ccb7b4c06d9b64a687c661/docs/eda.html" target="_blank">937717c</a>
+</td>
+<td>
+cgpu
+</td>
+<td>
+2019-12-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/cgpu/alfie/blob/71333a4497bb9e039f8ed8feb2c18f2a5bf0bb26/analysis/eda.Rmd" target="_blank">71333a4</a>
+</td>
+<td>
+cgpu
+</td>
+<td>
+2019-12-22
+</td>
+<td>
+Publish analysis files
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="dependencies" class="section level1">
+<h1><span class="header-section-number">1</span> Dependencies</h1>
+<pre class="r"><code>library(Rfast)</code></pre>
+<pre><code>Loading required package: Rcpp</code></pre>
+<pre><code>Loading required package: RcppZiggurat</code></pre>
+<pre class="r"><code>library(gamlss)</code></pre>
+<pre><code>Loading required package: splines</code></pre>
+<pre><code>Loading required package: gamlss.data</code></pre>
+<pre><code>
+Attaching package: &#39;gamlss.data&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:datasets&#39;:
+
+    sleep</code></pre>
+<pre><code>Loading required package: gamlss.dist</code></pre>
+<pre><code>Loading required package: MASS</code></pre>
+<pre><code>Loading required package: nlme</code></pre>
+<pre><code>Loading required package: parallel</code></pre>
+<pre><code> **********   GAMLSS Version 5.1-5  ********** </code></pre>
+<pre><code>For more on GAMLSS look at http://www.gamlss.org/</code></pre>
+<pre><code>Type gamlssNews() to see new features/changes/bug fixes.</code></pre>
+<pre class="r"><code>library(MASS)
+library(magrittr)
+library(plotly)</code></pre>
+<pre><code>Loading required package: ggplot2</code></pre>
+<pre><code>
+Attaching package: &#39;plotly&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:ggplot2&#39;:
+
+    last_plot</code></pre>
+<pre><code>The following object is masked from &#39;package:MASS&#39;:
+
+    select</code></pre>
+<pre><code>The following object is masked from &#39;package:stats&#39;:
+
+    filter</code></pre>
+<pre><code>The following object is masked from &#39;package:graphics&#39;:
+
+    layout</code></pre>
+<pre class="r"><code>library(cowplot)</code></pre>
+<pre><code>
+********************************************************</code></pre>
+<pre><code>Note: As of version 1.0.0, cowplot does not change the</code></pre>
+<pre><code>  default ggplot2 theme anymore. To recover the previous</code></pre>
+<pre><code>  behavior, execute:
+  theme_set(theme_cowplot())</code></pre>
+<pre><code>********************************************************</code></pre>
+<pre class="r"><code>library(data.table)</code></pre>
+<pre><code>
+Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:Rfast&#39;:
+
+    transpose</code></pre>
+<pre class="r"><code>library(GGally)</code></pre>
+<pre><code>Registered S3 method overwritten by &#39;GGally&#39;:
+  method from   
+  +.gg   ggplot2</code></pre>
+</div>
+<div id="summary-statistics-for-the-datasets" class="section level1">
+<h1><span class="header-section-number">2</span> Summary statistics for the datasets</h1>
+<pre class="r"><code>ortho_results &lt;- data.table::fread(&quot;data/stats167.csv&quot;)
+skimr::skim(ortho_results)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">ortho_results</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">160</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">9</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">9</td>
+</tr>
+<tr class="odd">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SimID</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">84.79</td>
+<td align="right">49.25</td>
+<td align="right">1.0e+00</td>
+<td align="right">40.75</td>
+<td align="right">87.50</td>
+<td align="right">127.25</td>
+<td align="right">167.00</td>
+<td align="left">▇▆▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">alpha</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0.88</td>
+<td align="right">0.29</td>
+<td align="right">2.2e-01</td>
+<td align="right">0.67</td>
+<td align="right">0.86</td>
+<td align="right">1.08</td>
+<td align="right">1.80</td>
+<td align="left">▃▇▇▃▁</td>
+</tr>
+<tr class="odd">
+<td align="left">scalar</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">2.64</td>
+<td align="right">1.48</td>
+<td align="right">6.0e-02</td>
+<td align="right">1.46</td>
+<td align="right">2.51</td>
+<td align="right">3.83</td>
+<td align="right">5.65</td>
+<td align="left">▆▇▇▅▅</td>
+</tr>
+<tr class="even">
+<td align="left">orthogroups</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">34199.28</td>
+<td align="right">25873.67</td>
+<td align="right">1.0e+04</td>
+<td align="right">11576.25</td>
+<td align="right">21591.50</td>
+<td align="right">54725.00</td>
+<td align="right">85123.00</td>
+<td align="left">▇▂▂▁▂</td>
+</tr>
+<tr class="odd">
+<td align="left">all_species_single_copy</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4960.63</td>
+<td align="right">4218.51</td>
+<td align="right">0.0e+00</td>
+<td align="right">227.25</td>
+<td align="right">5640.00</td>
+<td align="right">9322.00</td>
+<td align="right">9998.00</td>
+<td align="left">▇▁▁▁▇</td>
+</tr>
+<tr class="even">
+<td align="left">unassigned</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">33019.17</td>
+<td align="right">50515.52</td>
+<td align="right">0.0e+00</td>
+<td align="right">1018.75</td>
+<td align="right">9209.00</td>
+<td align="right">41843.25</td>
+<td align="right">249532.00</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">percentage_unassigned</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">7.50</td>
+<td align="right">11.48</td>
+<td align="right">0.0e+00</td>
+<td align="right">0.20</td>
+<td align="right">2.10</td>
+<td align="right">9.53</td>
+<td align="right">56.70</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">mean_orthogroup_size</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">22.36</td>
+<td align="right">15.43</td>
+<td align="right">2.5e+00</td>
+<td align="right">7.27</td>
+<td align="right">20.05</td>
+<td align="right">37.92</td>
+<td align="right">44.00</td>
+<td align="left">▇▂▂▃▆</td>
+</tr>
+<tr class="odd">
+<td align="left">median_orthogroup_size</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">21.69</td>
+<td align="right">20.52</td>
+<td align="right">2.0e+00</td>
+<td align="right">2.00</td>
+<td align="right">4.00</td>
+<td align="right">44.00</td>
+<td align="right">44.00</td>
+<td align="left">▇▁▁▁▇</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>DataExplorer::plot_str(ortho_results) </code></pre>
+</div>
+<div id="correlation-multiplot-for-variable-pairs-density-included" class="section level1">
+<h1><span class="header-section-number">3</span> Correlation multiplot for variable pairs (density included)</h1>
+<pre class="r"><code>ggcor &lt;- GGally::ggpairs(ortho_results, title = &quot;Correlation matrix plot (diagonal with estimated density)&quot;)
+ggcor</code></pre>
+<p><img src="figure/eda.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/cgpu/alfie/blob/937717c58d1f3c5d14ccb7b4c06d9b64a687c661/docs/figure/eda.Rmd/unnamed-chunk-3-1.png" target="_blank">937717c</a>
+</td>
+<td>
+cgpu
+</td>
+<td>
+2019-12-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="pearson-correlation-between-variable-pairs-heatmap" class="section level1">
+<h1><span class="header-section-number">4</span> Pearson correlation between variable pairs (heatmap)</h1>
+<pre class="r"><code> GGally::ggcorr(ortho_results, method = c(&quot;everything&quot;, &quot;pearson&quot;), label = TRUE) </code></pre>
+<p><img src="figure/eda.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/cgpu/alfie/blob/937717c58d1f3c5d14ccb7b4c06d9b64a687c661/docs/figure/eda.Rmd/unnamed-chunk-4-1.png" target="_blank">937717c</a>
+</td>
+<td>
+cgpu
+</td>
+<td>
+2019-12-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>dplyr::glimpse(ortho_results)</code></pre>
+<pre><code>Observations: 160
+Variables: 9
+$ SimID                   &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14…
+$ alpha                   &lt;dbl&gt; 0.7654031, 1.0686580, 1.2116030, 0.8303773, 0…
+$ scalar                  &lt;dbl&gt; 0.0616, 0.1583, 0.1931, 0.2230, 0.2734, 0.306…
+$ orthogroups             &lt;int&gt; 10001, 10001, 10001, 10001, 10002, 10001, 100…
+$ all_species_single_copy &lt;int&gt; 9998, 9991, 9991, 9995, 9990, 9995, 9997, 999…
+$ unassigned              &lt;int&gt; 0, 1, 3, 2, 3, 3, 3, 44, 2, 41, 6, 49, 15, 10…
+$ percentage_unassigned   &lt;dbl&gt; 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, …
+$ mean_orthogroup_size    &lt;dbl&gt; 44.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.…
+$ median_orthogroup_size  &lt;int&gt; 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 4…</code></pre>
+<pre class="r"><code>head(ortho_results)</code></pre>
+<pre><code>   SimID     alpha scalar orthogroups all_species_single_copy unassigned
+1:     1 0.7654031 0.0616       10001                    9998          0
+2:     2 1.0686580 0.1583       10001                    9991          1
+3:     3 1.2116030 0.1931       10001                    9991          3
+4:     4 0.8303773 0.2230       10001                    9995          2
+5:     5 0.6696246 0.2734       10002                    9990          3
+6:     6 0.4422281 0.3065       10001                    9995          3
+   percentage_unassigned mean_orthogroup_size median_orthogroup_size
+1:                     0                   44                     44
+2:                     0                   44                     44
+3:                     0                   44                     44
+4:                     0                   44                     44
+5:                     0                   44                     44
+6:                     0                   44                     44</code></pre>
+</div>
+<div id="scatter-plot-for" class="section level1">
+<h1><span class="header-section-number">5</span> Scatter plot for</h1>
+<pre class="r"><code>ggsubtitle_custom_color = &#39;#A9BACA&#39; 
+ggtitle_custom_color    = &#39;#4A637B&#39; 
+ggcaption_custom_color  = &#39;#A9BACA&#39; 
+h = 10000
+# alpha plot
+
+alpha_plot &lt;-
+  ggplot2::ggplot(data = ortho_results) + aes(x =alpha, 
+                                              y = orthogroups,
+                                              color = scalar) + 
+  geom_point() + 
+#  geom_hline(aes(yintercept = h, colour = &quot;red&quot;)) +
+#  geom_text(aes(0, h ,label = h, vjust = -1)) +
+  
+  # // layer 6:  Setting annotation for title, subtitle, caption
+  labs(title     = &quot;Title&quot;,
+      subtitle   = &quot;Subtitle&quot;,
+      caption    = &quot;Caption&quot;)   +
+  
+  theme(text = element_text(family = &#39;Helvetica&#39;,
+                          color = &#39;#000000&#39;)
+      ,plot.title    = element_text(color = ggtitle_custom_color   , size = 14, face = &quot;bold&quot; , hjust = 0.5)
+      ,plot.subtitle = element_text(color = ggsubtitle_custom_color, size = 9                , hjust = 1)
+      ,plot.caption  = element_text(color = ggsubtitle_custom_color, size = 7, face = &quot;italic&quot;)
+      ,legend.position = &quot;none&quot;) +
+  scale_color_gradient2(midpoint=mean(ortho_results$scalar), 
+                        low =&quot;red&quot;,
+                        mid =&quot;white&quot;,
+                        high =&quot;blue&quot;,
+                        space =&quot;Lab&quot; )
+  
+# +
+#   scale_x_continuous(breaks = pretty(ortho_results$alpha, n = 10)) +
+#   scale_y_discrete(breaks = pretty(ortho_results$orthogroups, n = 20))
+
+
+  
+# scalar plot
+scalar_plot &lt;- ggplot2::ggplot(data = ortho_results) + aes(x = scalar, 
+                                                           y = orthogroups,
+                                                           color = alpha ) + 
+  geom_point() +
+#  geom_hline(aes(yintercept = h, colour = &quot;red&quot;)) +
+#  geom_text(aes(0, h ,label = h, vjust = -1)) +
+  
+  # // layer 6:  Setting annotation for title, subtitle, caption
+  labs(title     = &quot;Title&quot;,
+      subtitle   = &quot;Subtitle&quot;,
+      caption    = &quot;Caption&quot;)   +
+  
+  theme(text = element_text(family = &#39;Helvetica&#39;,
+                          color = &#39;#000000&#39;)
+      ,plot.title    = element_text(color = ggtitle_custom_color   , size = 14, face = &quot;bold&quot; , hjust = 0.5)
+      ,plot.subtitle = element_text(color = ggsubtitle_custom_color, size = 9                , hjust = 1)
+      ,plot.caption  = element_text(color = ggsubtitle_custom_color, size = 7, face = &quot;italic&quot;)
+      ,legend.position = &quot;none&quot;) +
+    scale_color_gradient2(midpoint=mean(ortho_results$alpha), 
+                        low =&quot;red&quot;,
+                        mid =&quot;white&quot;,
+                        high =&quot;blue&quot;,
+                        space =&quot;Lab&quot; )
+# +
+#   scale_x_continuous(breaks = pretty(ortho_results$scalar, n = 10)) +
+#   scale_y_continuous(breaks = pretty(ortho_results$orthogroups, n = 20))
+
+
+
+plot_grid(alpha_plot, scalar_plot, ncol = 1, nrow = 2)</code></pre>
+<p><img src="figure/eda.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/cgpu/alfie/blob/937717c58d1f3c5d14ccb7b4c06d9b64a687c661/docs/figure/eda.Rmd/unnamed-chunk-7-1.png" target="_blank">937717c</a>
+</td>
+<td>
+cgpu
+</td>
+<td>
+2019-12-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="d-scatter-plot-of-scalar-alpha-orthogroups" class="section level1">
+<h1><span class="header-section-number">6</span> 3D Scatter plot of scalar, alpha, orthogroups</h1>
+<pre class="r"><code>cam.zoom = 1
+ver.angle = 90
+plotly::plot_ly(data = ortho_results,
+                x=~scalar, 
+                z=~orthogroups, 
+                y=~alpha,
+                type=&quot;scatter3d&quot;, 
+                mode=&quot;markers&quot;, 
+                color = ~orthogroups) %&gt;%
+  layout(    title = &quot;3D Scatter plot of scalar, alpha, orthogroups&quot;,
+             scene = list(xaxis = list(title = &#39;scalar&#39;),
+                     yaxis = list(title  = &#39;alpha&#39;),
+                     zaxis = list(title  = &#39;orthogroups&#39;)))</code></pre>
+<div id="htmlwidget-730f4285393270c3f51a" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-730f4285393270c3f51a">{"x":{"visdat":{"11f3a6b467fd2":["function () ","plotlyVisDat"]},"cur_data":"11f3a6b467fd2","attrs":{"11f3a6b467fd2":{"x":{},"z":{},"y":{},"mode":"markers","color":{},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"3D Scatter plot of scalar, alpha, orthogroups","scene":{"xaxis":{"title":"scalar"},"yaxis":{"title":"alpha"},"zaxis":{"title":"orthogroups"}},"hovermode":"closest","showlegend":false,"legend":{"yanchor":"top","y":0.5}},"source":"A","config":{"showSendToCloud":false},"data":[{"x":[0.0616,0.1583,0.1931,0.223,0.2734,0.3065,0.3398,0.4122,0.4473,0.4876,0.5156,0.5557,0.5905,0.6312,0.6656,0.6989,0.7437,0.7812,0.8024,0.8304,0.8755,0.9003,0.9292,0.9793,0.9977,1.0343,1.0829,1.1054,1.1499,1.1698,1.2115,1.2333,1.2639,1.2944,1.3244,1.3442,1.3671,1.3935,1.4302,1.443,1.4632,1.5096,1.5529,1.5676,1.5986,1.6205,1.6328,1.6803,1.7003,1.7362,1.7436,1.7565,1.7806,1.7982,1.8174,1.8323,1.8705,1.895,1.9173,1.9403,1.9592,1.9981,2.0007,2.0439,2.0796,2.115,2.1298,2.149,2.178,2.1947,2.215,2.23,2.2878,2.3271,2.3499,2.3727,2.4148,2.4324,2.4657,2.5008,2.5263,2.5365,2.5645,2.5779,2.6038,2.658,2.6739,2.6962,2.7244,2.7494,2.7657,2.8094,2.8333,2.8597,2.8911,2.9357,2.9838,3.0165,3.0357,3.0578,3.0762,3.1258,3.1419,3.1958,3.2321,3.2716,3.2874,3.3114,3.3653,3.4021,3.4267,3.4596,3.5043,3.5306,3.5839,3.5986,3.6596,3.6918,3.7533,3.8201,3.859,3.9051,3.9154,3.955,3.9914,4.0552,4.0641,4.1106,4.1279,4.1538,4.1998,4.2717,4.3296,4.3919,4.42,4.4512,4.5203,4.5719,4.6125,4.6273,4.6807,4.7156,4.7501,4.7957,4.852,4.8891,4.9421,4.9722,5.024,5.058,5.1314,5.194,5.2697,5.3098,5.3744,5.4274,5.4515,5.508,5.5807,5.6478],"z":[10001,10001,10001,10001,10002,10001,10000,10002,10002,10003,10019,10007,10023,10029,10030,10106,10216,10282,10069,10173,10693,10047,10107,10502,10131,10514,11646,10409,10005,10162,11032,12045,11817,12524,10428,11565,12464,11194,13337,11229,15411,10931,10739,11942,12754,18546,12471,14330,13715,21680,14097,13463,18717,13916,11615,12406,11458,10768,14057,18044,15313,11580,11445,18269,12502,11765,34336,40582,20322,28944,13751,18915,38758,15139,17581,35849,40623,27447,29300,21503,22256,45021,35863,40817,11867,29824,47137,51925,13167,10560,56840,63213,40701,23883,65181,50231,40902,21105,57028,17644,26032,43984,53242,33725,47382,41914,58057,47280,69406,14208,80015,20965,61439,12600,80858,47644,63527,75320,14729,80418,29302,44478,70320,79855,68079,54681,74756,72935,34799,75311,68905,37881,51433,66887,74996,75183,49701,82647,74886,47757,59054,79029,77246,81750,83358,61549,54857,77518,82562,81984,85123,76732,84600,33621,29988,84355,83499,30987,80073,23494],"y":[0.765403148,1.06865803,1.211603046,0.830377268,0.669624623,0.442228089,0.883977524,0.960033789,0.600080126,0.74386247,1.521819654,0.6680813,0.799108499,0.941127912,0.760568347,1.033545527,1.118167571,1.324673349,0.621909974,0.787750481,1.245644064,0.47524497,0.60664032,1.010466355,0.618006096,0.793982677,1.265775326,0.798397201,0.222545655,0.439858592,0.883977524,1.114914143,0.996405076,1.227078348,0.501831839,0.82002985,0.960210249,0.691900867,1.249105637,0.798397201,1.323968732,0.61290911,0.547877039,0.664495481,0.784103411,1.275651357,0.828095402,1.038804597,0.894267917,1.472896543,0.760568347,0.830946317,1.512728649,1.014705334,0.539682539,0.670338793,0.547877039,0.443022326,0.768526118,0.941172596,0.740607512,0.514898893,0.525771887,0.826718996,0.529497759,0.486025939,1.233096315,1.452906942,0.87571993,1.174824472,0.617587526,0.77300186,1.126791611,0.697458958,0.720522287,1.220420201,1.126791611,0.926648741,0.950003147,0.94114764,0.817336829,1.139108633,1.143857074,1.076318983,0.460285866,0.960374335,1.202345521,1.206887482,0.486025939,0.313618933,1.411069732,1.362936514,0.981452425,0.761739217,1.512728649,0.959279385,0.904324805,0.604835636,1.171387525,0.561515254,0.691900867,0.833217352,0.954426985,0.721670306,0.8928666,0.890454459,1.104356557,0.795517009,1.195399116,0.40875088,1.248921199,0.569238792,0.91017003,0.363006318,1.187508388,0.817873431,0.950618178,1.126791611,0.407165499,1.202345521,0.60664032,0.74386247,1.133648869,1.212431135,0.85885636,0.738468351,0.87737894,1.020037788,0.611758496,0.952634813,0.87307016,0.678353149,0.682795326,0.868957921,1.045700039,0.995088373,0.654085725,1.049912085,1.062873471,0.588784409,0.640209582,0.828980691,0.837089222,1.364187024,1.269661284,0.670079243,0.669504812,0.800556972,1.340698803,1.248921199,0.908296208,1.799012845,0.981587175,0.491554239,0.475136836,1.013765051,0.953524308,0.501039088,0.667545648,0.407165499],"mode":"markers","type":"scatter3d","marker":{"colorbar":{"title":"orthogroups","ticklen":2},"cmin":10000,"cmax":85123,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[10001,10001,10001,10001,10002,10001,10000,10002,10002,10003,10019,10007,10023,10029,10030,10106,10216,10282,10069,10173,10693,10047,10107,10502,10131,10514,11646,10409,10005,10162,11032,12045,11817,12524,10428,11565,12464,11194,13337,11229,15411,10931,10739,11942,12754,18546,12471,14330,13715,21680,14097,13463,18717,13916,11615,12406,11458,10768,14057,18044,15313,11580,11445,18269,12502,11765,34336,40582,20322,28944,13751,18915,38758,15139,17581,35849,40623,27447,29300,21503,22256,45021,35863,40817,11867,29824,47137,51925,13167,10560,56840,63213,40701,23883,65181,50231,40902,21105,57028,17644,26032,43984,53242,33725,47382,41914,58057,47280,69406,14208,80015,20965,61439,12600,80858,47644,63527,75320,14729,80418,29302,44478,70320,79855,68079,54681,74756,72935,34799,75311,68905,37881,51433,66887,74996,75183,49701,82647,74886,47757,59054,79029,77246,81750,83358,61549,54857,77518,82562,81984,85123,76732,84600,33621,29988,84355,83499,30987,80073,23494],"line":{"colorbar":{"title":"","ticklen":2},"cmin":10000,"cmax":85123,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":false,"color":[10001,10001,10001,10001,10002,10001,10000,10002,10002,10003,10019,10007,10023,10029,10030,10106,10216,10282,10069,10173,10693,10047,10107,10502,10131,10514,11646,10409,10005,10162,11032,12045,11817,12524,10428,11565,12464,11194,13337,11229,15411,10931,10739,11942,12754,18546,12471,14330,13715,21680,14097,13463,18717,13916,11615,12406,11458,10768,14057,18044,15313,11580,11445,18269,12502,11765,34336,40582,20322,28944,13751,18915,38758,15139,17581,35849,40623,27447,29300,21503,22256,45021,35863,40817,11867,29824,47137,51925,13167,10560,56840,63213,40701,23883,65181,50231,40902,21105,57028,17644,26032,43984,53242,33725,47382,41914,58057,47280,69406,14208,80015,20965,61439,12600,80858,47644,63527,75320,14729,80418,29302,44478,70320,79855,68079,54681,74756,72935,34799,75311,68905,37881,51433,66887,74996,75183,49701,82647,74886,47757,59054,79029,77246,81750,83358,61549,54857,77518,82562,81984,85123,76732,84600,33621,29988,84355,83499,30987,80073,23494]}},"frame":null},{"x":[0.0616,5.6478],"y":[0.222545655,1.799012845],"type":"scatter3d","mode":"markers","opacity":0,"hoverinfo":"none","showlegend":false,"marker":{"colorbar":{"title":"orthogroups","ticklen":2,"len":0.5,"lenmode":"fraction","y":1,"yanchor":"top"},"cmin":10000,"cmax":85123,"colorscale":[["0","rgba(68,1,84,1)"],["0.0416666666666667","rgba(70,19,97,1)"],["0.0833333333333333","rgba(72,32,111,1)"],["0.125","rgba(71,45,122,1)"],["0.166666666666667","rgba(68,58,128,1)"],["0.208333333333333","rgba(64,70,135,1)"],["0.25","rgba(60,82,138,1)"],["0.291666666666667","rgba(56,93,140,1)"],["0.333333333333333","rgba(49,104,142,1)"],["0.375","rgba(46,114,142,1)"],["0.416666666666667","rgba(42,123,142,1)"],["0.458333333333333","rgba(38,133,141,1)"],["0.5","rgba(37,144,140,1)"],["0.541666666666667","rgba(33,154,138,1)"],["0.583333333333333","rgba(39,164,133,1)"],["0.625","rgba(47,174,127,1)"],["0.666666666666667","rgba(53,183,121,1)"],["0.708333333333333","rgba(79,191,110,1)"],["0.75","rgba(98,199,98,1)"],["0.791666666666667","rgba(119,207,85,1)"],["0.833333333333333","rgba(147,214,70,1)"],["0.875","rgba(172,220,52,1)"],["0.916666666666667","rgba(199,225,42,1)"],["0.958333333333333","rgba(226,228,40,1)"],["1","rgba(253,231,37,1)"]],"showscale":true,"color":[10000,85123],"line":{"color":"rgba(255,127,14,1)"}},"z":[10000,85123],"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="forward-regression-with-rfast" class="section level1">
+<h1><span class="header-section-number">7</span> Forward regression with <code>RFast</code></h1>
+<pre class="r"><code>class(as.matrix(ortho_results[,c(&quot;alpha&quot;,&quot;scalar&quot;)]))</code></pre>
+<pre><code>[1] &quot;matrix&quot;</code></pre>
+<pre class="r"><code>Rfast::cor.fsreg(ortho_results$orthogroups, 
+                 as.matrix(ortho_results[,c(&quot;alpha&quot;,&quot;scalar&quot;)]), 
+                 ystand = TRUE, 
+                 xstand = TRUE, 
+                 threshold = 0.00005, 
+                 tolb = 2, 
+                 tolr = 0.02, 
+                 stopping = &quot;BICR2&quot;) </code></pre>
+<pre><code>     sel        pv     stat    bic adjusted R2
+[1,]   2 -67.73863 14.26717 294.48   0.6603902</code></pre>
+</div>
+<div id="binomial-models-and-quasi-poisson-because-less-assumptions-3" class="section level1">
+<h1><span class="header-section-number">8</span> Binomial models (and quasi poisson because less assumptions = &lt;3 )</h1>
+<pre class="r"><code>Rfast::qpois.reg(ortho_results$all_species_single_copy, ortho_results$orthogroups, full = FALSE, tol = 1e-09,maxiters = 100)</code></pre>
+<pre><code>$be
+              [,1]
+[1,] 11.0927439046
+[2,] -0.0001930696
+
+$devi
+[1] 165599.5
+
+$varb
+              [,1]          [,2]
+[1,]  2.635490e-04 -3.618679e-08
+[2,] -3.618679e-08  1.772443e-11
+
+$phi
+[1] 1037.846</code></pre>
+<pre class="r"><code>quasi &lt;- glm(ortho_results$orthogroups~ortho_results$scalar, family=quasipoisson) #quasipoisson
+sum_quasi &lt;- summary(quasi) 
+
+df = 3 # three model parameters: a,b, and phi
+phi.fit = sum_quasi$dispersion #fitted phi value (aka dispersion) from summary(quasi)
+mu.fit = quasi$fitted.values 
+
+#dnbinom = negbin density, log=T returns log probabilities
+AIC_quasi = 2*df - 2*sum(dnbinom(ortho_results$orthogroups, 
+                           mu=mu.fit, 
+                           size = mu.fit/(phi.fit - 1), 
+                           log=T))
+
+AIC_quasi</code></pre>
+<pre><code>[1] 3482.584</code></pre>
+<pre class="r"><code>glmNB &lt;- MASS::glm.nb(ortho_results$orthogroups~ortho_results$scalar) #negative binomial
+
+
+gamlss_NB1 &lt;- gamlss::gamlss(ortho_results$orthogroups~ortho_results$scalar, family = &quot;NBI&quot;) </code></pre>
+<pre><code>GAMLSS-RS iteration 1: Global Deviance = 3410.072 
+GAMLSS-RS iteration 2: Global Deviance = 3410.072 </code></pre>
+<pre class="r"><code>gamlss_NB2 &lt;- gamlss::gamlss(ortho_results$orthogroups~ortho_results$scalar, family = &quot;NBII&quot;)</code></pre>
+<pre><code>GAMLSS-RS iteration 1: Global Deviance = 3494.26 
+GAMLSS-RS iteration 2: Global Deviance = 3472.721 
+GAMLSS-RS iteration 3: Global Deviance = 3471.49 
+GAMLSS-RS iteration 4: Global Deviance = 3471.465 
+GAMLSS-RS iteration 5: Global Deviance = 3471.465 </code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.6.0 (2019-04-26)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: macOS Mojave 10.14.5
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.6/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+
+attached base packages:
+[1] parallel  splines   stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] GGally_1.4.0       data.table_1.12.8  cowplot_1.0.0      plotly_4.9.1      
+ [5] ggplot2_3.2.1      magrittr_1.5       gamlss_5.1-5       nlme_3.1-143      
+ [9] gamlss.dist_5.1-5  MASS_7.3-51.5      gamlss.data_5.1-4  Rfast_1.9.8       
+[13] RcppZiggurat_0.1.5 Rcpp_1.0.3         workflowr_1.6.0   
+
+loaded via a namespace (and not attached):
+ [1] httr_1.4.1         tidyr_1.0.0        jsonlite_1.6       viridisLite_0.3.0 
+ [5] shiny_1.4.0        assertthat_0.2.1   highr_0.8          yaml_2.2.0        
+ [9] pillar_1.4.3       backports_1.1.5    lattice_0.20-38    glue_1.3.1        
+[13] digest_0.6.23      RColorBrewer_1.1-2 promises_1.1.0     DataExplorer_0.8.0
+[17] colorspace_1.4-1   htmltools_0.4.0    httpuv_1.5.2       Matrix_1.2-18     
+[21] plyr_1.8.5         pkgconfig_2.0.3    xtable_1.8-4       purrr_0.3.3       
+[25] scales_1.1.0       whisker_0.4        later_1.0.0        git2r_0.26.1      
+[29] tibble_2.1.3       farver_2.0.1       withr_2.1.2        repr_1.0.2        
+[33] skimr_2.0.2        lazyeval_0.2.2     cli_2.0.0          mime_0.8          
+[37] survival_3.1-8     crayon_1.3.4       evaluate_0.14      fansi_0.4.0       
+[41] fs_1.3.1           tools_3.6.0        lifecycle_0.1.0    stringr_1.4.0     
+[45] munsell_0.5.0      networkD3_0.4      compiler_3.6.0     rlang_0.4.2       
+[49] grid_3.6.0         htmlwidgets_1.5.1  crosstalk_1.0.0    igraph_1.2.4.2    
+[53] base64enc_0.1-3    labeling_0.3       rmarkdown_2.0      gtable_0.3.0      
+[57] reshape_0.8.8      reshape2_1.4.3     R6_2.4.1           gridExtra_2.3     
+[61] knitr_1.26         dplyr_0.8.3        fastmap_1.0.1      utf8_1.1.4        
+[65] zeallot_0.1.0      rprojroot_1.3-2    stringi_1.4.3      vctrs_0.2.1       
+[69] tidyselect_0.2.5   xfun_0.11         </code></pre>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRXhwbG9yYXRvcnkgRGF0YSBBbmFseXNpcyBvZiBgT3J0aG9maW5kZXJgIHJlc3VsdHMgIgpzdWJ0aXRsZTogJ1NpbXVsYXRlZCBkYXRhc2V0IGdlbmVyYXRlZCBieSBgQWxmYCcKYXV0aG9yOiAiIgpkYXRlOiAiIgpvdXRwdXQ6IAogIHdvcmtmbG93cjo6d2Zsb3dfaHRtbDoKICAgIGNvZGVfZm9sZGluZzogaGlkZQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQogICAgdG9jOiB0cnVlICAgICAgICAgICAgICAgICAgIyB0YWJsZSBvZiBjb250ZW50IHRydWUKICAgIHRvY19kZXB0aDogMyAgICAgICAgICAgICAgICMgdXB0byB0aHJlZSBkZXB0aHMgb2YgaGVhZGluZ3MgKHNwZWNpZmllZCBieSAjLCAjIyBhbmQgIyMjKQogICAgdG9jX2Zsb2F0OiB0cnVlCiAgICBudW1iZXJfc2VjdGlvbnM6IHRydWUgICAgICMgaWYgeW91IHdhbnQgbnVtYmVyIHNlY3Rpb25zIGF0IGVhY2ggdGFibGUgaGVhZGVyCiAgICB0aGVtZTogY29zbW8gICAgICAgICAgICAgICMgbWFueSBvcHRpb25zIGZvciB0aGVtZSwgdGhpcyBvbmUgaXMgbXkgZmF2b3JpdGUuCiAgICBoaWdobGlnaHQ6IHRleHRtYXRlICAgICAgICAgICAjIHNwZWNpZmllcyB0aGUgc3ludGF4IGhpZ2hsaWdodGluZyBzdHlsZQogICAgY3NzOiBzdHlsZS5jc3MgICAgICAgICAgICAgICAjIHlvdSBjYW4gYWRkIHlvdXIgY3VzdG9tIGNzcywgc2hvdWxkIGJlIGluIHNhbWUgZm9sZGVyCiAgICAjIG92ZXJyaWRlIGRlZmF1bHRzIGJ5IGNhbGxpbmcgd2l0aCBjdXN0b20gcGFyYW1zIGZyb20gY29tbWFuZCBsaW5lIGh0dHBzOi8vYm9va2Rvd24ub3JnL3lpaHVpL3JtYXJrZG93bi9wYXJhbXMta25pdC5odG1sIDE1LjMuMgplZGl0b3Jfb3B0aW9uczoKICBjaHVua19vdXRwdXRfdHlwZTogY29uc29sZQotLS0KCiMgRGVwZW5kZW5jaWVzCgpgYGB7cn0KbGlicmFyeShSZmFzdCkKbGlicmFyeShnYW1sc3MpCmxpYnJhcnkoTUFTUykKbGlicmFyeShtYWdyaXR0cikKbGlicmFyeShwbG90bHkpCmxpYnJhcnkoY293cGxvdCkKbGlicmFyeShkYXRhLnRhYmxlKQpsaWJyYXJ5KEdHYWxseSkKYGBgCgoKIyBTdW1tYXJ5IHN0YXRpc3RpY3MgZm9yIHRoZSBkYXRhc2V0cwoKYGBge3J9Cm9ydGhvX3Jlc3VsdHMgPC0gZGF0YS50YWJsZTo6ZnJlYWQoImRhdGEvc3RhdHMxNjcuY3N2IikKc2tpbXI6OnNraW0ob3J0aG9fcmVzdWx0cykKRGF0YUV4cGxvcmVyOjpwbG90X3N0cihvcnRob19yZXN1bHRzKSAKYGBgCgoKIyBDb3JyZWxhdGlvbiBtdWx0aXBsb3QgZm9yIHZhcmlhYmxlIHBhaXJzIChkZW5zaXR5IGluY2x1ZGVkKQoKYGBge3IsIG1lc3NhZ2U9RkFMU0V9CgpnZ2NvciA8LSBHR2FsbHk6OmdncGFpcnMob3J0aG9fcmVzdWx0cywgdGl0bGUgPSAiQ29ycmVsYXRpb24gbWF0cml4IHBsb3QgKGRpYWdvbmFsIHdpdGggZXN0aW1hdGVkIGRlbnNpdHkpIikKZ2djb3IKYGBgCgoKIyBQZWFyc29uIGNvcnJlbGF0aW9uIGJldHdlZW4gdmFyaWFibGUgcGFpcnMgKGhlYXRtYXApCgpgYGB7cn0KIEdHYWxseTo6Z2djb3JyKG9ydGhvX3Jlc3VsdHMsIG1ldGhvZCA9IGMoImV2ZXJ5dGhpbmciLCAicGVhcnNvbiIpLCBsYWJlbCA9IFRSVUUpIApgYGAKCmBgYHtyfQpkcGx5cjo6Z2xpbXBzZShvcnRob19yZXN1bHRzKQpgYGAKCgoKYGBge3J9CmhlYWQob3J0aG9fcmVzdWx0cykKYGBgCgoKCiMgU2NhdHRlciBwbG90IGZvciAKCmBgYHtyfQpnZ3N1YnRpdGxlX2N1c3RvbV9jb2xvciA9ICcjQTlCQUNBJyAKZ2d0aXRsZV9jdXN0b21fY29sb3IgICAgPSAnIzRBNjM3QicgCmdnY2FwdGlvbl9jdXN0b21fY29sb3IgID0gJyNBOUJBQ0EnIApoID0gMTAwMDAKIyBhbHBoYSBwbG90CgphbHBoYV9wbG90IDwtCiAgZ2dwbG90Mjo6Z2dwbG90KGRhdGEgPSBvcnRob19yZXN1bHRzKSArIGFlcyh4ID1hbHBoYSwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB5ID0gb3J0aG9ncm91cHMsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjb2xvciA9IHNjYWxhcikgKyAKICBnZW9tX3BvaW50KCkgKyAKIyAgZ2VvbV9obGluZShhZXMoeWludGVyY2VwdCA9IGgsIGNvbG91ciA9ICJyZWQiKSkgKwojICBnZW9tX3RleHQoYWVzKDAsIGggLGxhYmVsID0gaCwgdmp1c3QgPSAtMSkpICsKICAKICAjIC8vIGxheWVyIDY6ICBTZXR0aW5nIGFubm90YXRpb24gZm9yIHRpdGxlLCBzdWJ0aXRsZSwgY2FwdGlvbgogIGxhYnModGl0bGUgICAgID0gIlRpdGxlIiwKICAgICAgc3VidGl0bGUgICA9ICJTdWJ0aXRsZSIsCiAgICAgIGNhcHRpb24gICAgPSAiQ2FwdGlvbiIpICAgKwogIAogIHRoZW1lKHRleHQgPSBlbGVtZW50X3RleHQoZmFtaWx5ID0gJ0hlbHZldGljYScsCiAgICAgICAgICAgICAgICAgICAgICAgICAgY29sb3IgPSAnIzAwMDAwMCcpCiAgICAgICxwbG90LnRpdGxlICAgID0gZWxlbWVudF90ZXh0KGNvbG9yID0gZ2d0aXRsZV9jdXN0b21fY29sb3IgICAsIHNpemUgPSAxNCwgZmFjZSA9ICJib2xkIiAsIGhqdXN0ID0gMC41KQogICAgICAscGxvdC5zdWJ0aXRsZSA9IGVsZW1lbnRfdGV4dChjb2xvciA9IGdnc3VidGl0bGVfY3VzdG9tX2NvbG9yLCBzaXplID0gOSAgICAgICAgICAgICAgICAsIGhqdXN0ID0gMSkKICAgICAgLHBsb3QuY2FwdGlvbiAgPSBlbGVtZW50X3RleHQoY29sb3IgPSBnZ3N1YnRpdGxlX2N1c3RvbV9jb2xvciwgc2l6ZSA9IDcsIGZhY2UgPSAiaXRhbGljIikKICAgICAgLGxlZ2VuZC5wb3NpdGlvbiA9ICJub25lIikgKwogIHNjYWxlX2NvbG9yX2dyYWRpZW50MihtaWRwb2ludD1tZWFuKG9ydGhvX3Jlc3VsdHMkc2NhbGFyKSwgCiAgICAgICAgICAgICAgICAgICAgICAgIGxvdyA9InJlZCIsCiAgICAgICAgICAgICAgICAgICAgICAgIG1pZCA9IndoaXRlIiwKICAgICAgICAgICAgICAgICAgICAgICAgaGlnaCA9ImJsdWUiLAogICAgICAgICAgICAgICAgICAgICAgICBzcGFjZSA9IkxhYiIgKQogIAojICsKIyAgIHNjYWxlX3hfY29udGludW91cyhicmVha3MgPSBwcmV0dHkob3J0aG9fcmVzdWx0cyRhbHBoYSwgbiA9IDEwKSkgKwojICAgc2NhbGVfeV9kaXNjcmV0ZShicmVha3MgPSBwcmV0dHkob3J0aG9fcmVzdWx0cyRvcnRob2dyb3VwcywgbiA9IDIwKSkKCgogIAojIHNjYWxhciBwbG90CnNjYWxhcl9wbG90IDwtIGdncGxvdDI6OmdncGxvdChkYXRhID0gb3J0aG9fcmVzdWx0cykgKyBhZXMoeCA9IHNjYWxhciwgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgeSA9IG9ydGhvZ3JvdXBzLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yID0gYWxwaGEgKSArIAogIGdlb21fcG9pbnQoKSArCiMgIGdlb21faGxpbmUoYWVzKHlpbnRlcmNlcHQgPSBoLCBjb2xvdXIgPSAicmVkIikpICsKIyAgZ2VvbV90ZXh0KGFlcygwLCBoICxsYWJlbCA9IGgsIHZqdXN0ID0gLTEpKSArCiAgCiAgIyAvLyBsYXllciA2OiAgU2V0dGluZyBhbm5vdGF0aW9uIGZvciB0aXRsZSwgc3VidGl0bGUsIGNhcHRpb24KICBsYWJzKHRpdGxlICAgICA9ICJUaXRsZSIsCiAgICAgIHN1YnRpdGxlICAgPSAiU3VidGl0bGUiLAogICAgICBjYXB0aW9uICAgID0gIkNhcHRpb24iKSAgICsKICAKICB0aGVtZSh0ZXh0ID0gZWxlbWVudF90ZXh0KGZhbWlseSA9ICdIZWx2ZXRpY2EnLAogICAgICAgICAgICAgICAgICAgICAgICAgIGNvbG9yID0gJyMwMDAwMDAnKQogICAgICAscGxvdC50aXRsZSAgICA9IGVsZW1lbnRfdGV4dChjb2xvciA9IGdndGl0bGVfY3VzdG9tX2NvbG9yICAgLCBzaXplID0gMTQsIGZhY2UgPSAiYm9sZCIgLCBoanVzdCA9IDAuNSkKICAgICAgLHBsb3Quc3VidGl0bGUgPSBlbGVtZW50X3RleHQoY29sb3IgPSBnZ3N1YnRpdGxlX2N1c3RvbV9jb2xvciwgc2l6ZSA9IDkgICAgICAgICAgICAgICAgLCBoanVzdCA9IDEpCiAgICAgICxwbG90LmNhcHRpb24gID0gZWxlbWVudF90ZXh0KGNvbG9yID0gZ2dzdWJ0aXRsZV9jdXN0b21fY29sb3IsIHNpemUgPSA3LCBmYWNlID0gIml0YWxpYyIpCiAgICAgICxsZWdlbmQucG9zaXRpb24gPSAibm9uZSIpICsKICAgIHNjYWxlX2NvbG9yX2dyYWRpZW50MihtaWRwb2ludD1tZWFuKG9ydGhvX3Jlc3VsdHMkYWxwaGEpLCAKICAgICAgICAgICAgICAgICAgICAgICAgbG93ID0icmVkIiwKICAgICAgICAgICAgICAgICAgICAgICAgbWlkID0id2hpdGUiLAogICAgICAgICAgICAgICAgICAgICAgICBoaWdoID0iYmx1ZSIsCiAgICAgICAgICAgICAgICAgICAgICAgIHNwYWNlID0iTGFiIiApCiMgKwojICAgc2NhbGVfeF9jb250aW51b3VzKGJyZWFrcyA9IHByZXR0eShvcnRob19yZXN1bHRzJHNjYWxhciwgbiA9IDEwKSkgKwojICAgc2NhbGVfeV9jb250aW51b3VzKGJyZWFrcyA9IHByZXR0eShvcnRob19yZXN1bHRzJG9ydGhvZ3JvdXBzLCBuID0gMjApKQoKCgpwbG90X2dyaWQoYWxwaGFfcGxvdCwgc2NhbGFyX3Bsb3QsIG5jb2wgPSAxLCBucm93ID0gMikKYGBgCgoKIyAzRCBTY2F0dGVyIHBsb3Qgb2Ygc2NhbGFyLCBhbHBoYSwgb3J0aG9ncm91cHMKCmBgYHtyfQpjYW0uem9vbSA9IDEKdmVyLmFuZ2xlID0gOTAKcGxvdGx5OjpwbG90X2x5KGRhdGEgPSBvcnRob19yZXN1bHRzLAogICAgICAgICAgICAgICAgeD1+c2NhbGFyLCAKICAgICAgICAgICAgICAgIHo9fm9ydGhvZ3JvdXBzLCAKICAgICAgICAgICAgICAgIHk9fmFscGhhLAogICAgICAgICAgICAgICAgdHlwZT0ic2NhdHRlcjNkIiwgCiAgICAgICAgICAgICAgICBtb2RlPSJtYXJrZXJzIiwgCiAgICAgICAgICAgICAgICBjb2xvciA9IH5vcnRob2dyb3VwcykgJT4lCiAgbGF5b3V0KCAgICB0aXRsZSA9ICIzRCBTY2F0dGVyIHBsb3Qgb2Ygc2NhbGFyLCBhbHBoYSwgb3J0aG9ncm91cHMiLAogICAgICAgICAgICAgc2NlbmUgPSBsaXN0KHhheGlzID0gbGlzdCh0aXRsZSA9ICdzY2FsYXInKSwKICAgICAgICAgICAgICAgICAgICAgeWF4aXMgPSBsaXN0KHRpdGxlICA9ICdhbHBoYScpLAogICAgICAgICAgICAgICAgICAgICB6YXhpcyA9IGxpc3QodGl0bGUgID0gJ29ydGhvZ3JvdXBzJykpKQoKCmBgYAoKIyBGb3J3YXJkIHJlZ3Jlc3Npb24gd2l0aCBgUkZhc3RgCgpgYGB7cn0KY2xhc3MoYXMubWF0cml4KG9ydGhvX3Jlc3VsdHNbLGMoImFscGhhIiwic2NhbGFyIildKSkKClJmYXN0Ojpjb3IuZnNyZWcob3J0aG9fcmVzdWx0cyRvcnRob2dyb3VwcywgCiAgICAgICAgICAgICAgICAgYXMubWF0cml4KG9ydGhvX3Jlc3VsdHNbLGMoImFscGhhIiwic2NhbGFyIildKSwgCiAgICAgICAgICAgICAgICAgeXN0YW5kID0gVFJVRSwgCiAgICAgICAgICAgICAgICAgeHN0YW5kID0gVFJVRSwgCiAgICAgICAgICAgICAgICAgdGhyZXNob2xkID0gMC4wMDAwNSwgCiAgICAgICAgICAgICAgICAgdG9sYiA9IDIsIAogICAgICAgICAgICAgICAgIHRvbHIgPSAwLjAyLCAKICAgICAgICAgICAgICAgICBzdG9wcGluZyA9ICJCSUNSMiIpIAoKYGBgCgoKIyBCaW5vbWlhbCBtb2RlbHMgKGFuZCBxdWFzaSBwb2lzc29uIGJlY2F1c2UgbGVzcyBhc3N1bXB0aW9ucyA9IDwzICkKCmBgYHtyfQoKClJmYXN0OjpxcG9pcy5yZWcob3J0aG9fcmVzdWx0cyRhbGxfc3BlY2llc19zaW5nbGVfY29weSwgb3J0aG9fcmVzdWx0cyRvcnRob2dyb3VwcywgZnVsbCA9IEZBTFNFLCB0b2wgPSAxZS0wOSxtYXhpdGVycyA9IDEwMCkKCgpxdWFzaSA8LSBnbG0ob3J0aG9fcmVzdWx0cyRvcnRob2dyb3Vwc35vcnRob19yZXN1bHRzJHNjYWxhciwgZmFtaWx5PXF1YXNpcG9pc3NvbikgI3F1YXNpcG9pc3NvbgpzdW1fcXVhc2kgPC0gc3VtbWFyeShxdWFzaSkgCgpkZiA9IDMgIyB0aHJlZSBtb2RlbCBwYXJhbWV0ZXJzOiBhLGIsIGFuZCBwaGkKcGhpLmZpdCA9IHN1bV9xdWFzaSRkaXNwZXJzaW9uICNmaXR0ZWQgcGhpIHZhbHVlIChha2EgZGlzcGVyc2lvbikgZnJvbSBzdW1tYXJ5KHF1YXNpKQptdS5maXQgPSBxdWFzaSRmaXR0ZWQudmFsdWVzIAoKI2RuYmlub20gPSBuZWdiaW4gZGVuc2l0eSwgbG9nPVQgcmV0dXJucyBsb2cgcHJvYmFiaWxpdGllcwpBSUNfcXVhc2kgPSAyKmRmIC0gMipzdW0oZG5iaW5vbShvcnRob19yZXN1bHRzJG9ydGhvZ3JvdXBzLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgbXU9bXUuZml0LCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgc2l6ZSA9IG11LmZpdC8ocGhpLmZpdCAtIDEpLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgbG9nPVQpKQoKQUlDX3F1YXNpCgpnbG1OQiA8LSBNQVNTOjpnbG0ubmIob3J0aG9fcmVzdWx0cyRvcnRob2dyb3Vwc35vcnRob19yZXN1bHRzJHNjYWxhcikgI25lZ2F0aXZlIGJpbm9taWFsCgoKZ2FtbHNzX05CMSA8LSBnYW1sc3M6OmdhbWxzcyhvcnRob19yZXN1bHRzJG9ydGhvZ3JvdXBzfm9ydGhvX3Jlc3VsdHMkc2NhbGFyLCBmYW1pbHkgPSAiTkJJIikgCmdhbWxzc19OQjIgPC0gZ2FtbHNzOjpnYW1sc3Mob3J0aG9fcmVzdWx0cyRvcnRob2dyb3Vwc35vcnRob19yZXN1bHRzJHNjYWxhciwgZmFtaWx5ID0gIk5CSUkiKQoKYGBgCg==</div>
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("eda.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
