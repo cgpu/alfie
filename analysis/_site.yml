@@ -7,15 +7,17 @@ navbar:
     href: index.html
   - text: About
     href: about.html
-  - text: License
-    href: license.html
+  - text: EDA
+    href: eda.html
   right:
   - icon: fa-github
     text: Source code
     href: https://github.com/cgpu/alfie
+  - text: License
+    href: license.html
 output:
   workflowr::wflow_html:
     toc: yes
     toc_float: yes
-    theme: cosmo
-    highlight: textmate
+    theme: yeti              # many options for theme, this one is my favorite.
+    highlight: tango           # specifies the syntax highlighting style
