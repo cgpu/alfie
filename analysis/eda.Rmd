@@ -46,15 +46,25 @@ DataExplorer::plot_str(ortho_results)
 
 ```{r, message=FALSE}
 
-ggcor <- GGally::ggpairs(ortho_results, title = "Correlation matrix plot (diagonal with estimated density)")
+ggcor <- GGally::ggpairs(ortho_results, 
+                         title = "Correlation matrix plot (diagonal with estimated density)")
+
 ggcor
+                         
 ```
 
 
 # Pearson correlation between variable pairs (heatmap)
 
 ```{r}
- GGally::ggcorr(ortho_results, method = c("everything", "pearson"), label = TRUE) 
+GGally::ggcorr(ortho_results, 
+               method   = c("everything", "pearson"), 
+               label    = TRUE,                      
+               midpoint = 0, 
+               low      = "#F9E72C",
+               mid      = "#4A637B",
+               high     = "#F9E72C"
+           ) 
 ```
 
 ```{r}
@@ -98,10 +108,10 @@ alpha_plot <-
       ,plot.caption  = element_text(color = ggsubtitle_custom_color, size = 7, face = "italic")
       ,legend.position = "none") +
   scale_color_gradient2(midpoint=mean(ortho_results$scalar), 
-                        low ="red",
-                        mid ="white",
-                        high ="blue",
-                        space ="Lab" )
+                        low      = "#4B0C5D",
+                        mid      = "#68CC65",
+                        high     = "#F9E72C",
+                        space    = "Lab" )
   
 # +
 #   scale_x_continuous(breaks = pretty(ortho_results$alpha, n = 10)) +
@@ -129,10 +139,10 @@ scalar_plot <- ggplot2::ggplot(data = ortho_results) + aes(x = scalar,
       ,plot.caption  = element_text(color = ggsubtitle_custom_color, size = 7, face = "italic")
       ,legend.position = "none") +
     scale_color_gradient2(midpoint=mean(ortho_results$alpha), 
-                        low ="red",
-                        mid ="white",
-                        high ="blue",
-                        space ="Lab" )
+                        low      = "#4B0C5D",
+                        mid      = "#68CC65",
+                        high     = "#F9E72C",
+                        space    = "Lab" )
 # +
 #   scale_x_continuous(breaks = pretty(ortho_results$scalar, n = 10)) +
 #   scale_y_continuous(breaks = pretty(ortho_results$orthogroups, n = 20))
